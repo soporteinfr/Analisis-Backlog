@@ -1,17 +1,17 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_excel('../ANALISIS BACKLOG/datafiltrada_nv2.xlsx')
+# Lectura del archivo Excel
+df = pd.read_excel('../ANALISIS BACKLOG/Sabana de datos enero2023-ago2025.xlsx')
 
-df = df.dropna(how='all')
+# Filtrado de columnas y datos
+col = ["Numero de caso", "Fecha de registro", "Asunto", "Descripcion", "Estado", "Grupo de especialista", "Especialista", "Primer Nivel", "Segundo Nivel"]
+df = df[col]
+df = df[df["Grupo de especialista"] == "Nivel II - Aplicaciones"].reset_index()
 
+# Convertimos la columna "Fecha de registro" a formato datetime
 df["Fecha de registro"] = pd.to_datetime(df["Fecha de registro"], format="%d/%m/%Y")
+df["Fecha de registro"] = df["Fecha de registro"].dt.strftime("%m/%Y")
 
-df["Mes"] = df["Fecha de registro"].dt.month
-df["Año"] = df["Fecha de registro"].dt.year
-
-group = df.groupby(["Año", "Mes"])["Numero de caso"].count().reset_index()
-group = group.rename(columns={"Numero de caso": "Cantidad de casos"})
-
-print(group)
-
+#Imprimir cabezales de las tablas para visualizar datos
+print(df.head())
